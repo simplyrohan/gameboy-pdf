@@ -15,6 +15,8 @@ uint16_t *framebuffer;
 
 SDL_Surface *screen;
 
+int pad = 0;
+
 void video_callback(void *buffer)
 {
     // printf("Video\n");
@@ -27,7 +29,12 @@ void video_callback(void *buffer)
         {
             uint16_t color = framebuffer[i * 144 + j];
 
-            *((Uint32*)screen->pixels + i * 144 + j) = (((color >> 11) & 0x1F) << 19) | (((color >> 5) & 0x3F) << 10) | ((color & 0x1F) << 3);
+            int r = (color >> 11) & 0x1F;
+            int g = (color >> 5) & 0x3F;
+            int b = color & 0x1F;
+
+            *((Uint32 *)screen->pixels + i * 144 + j) = SDL_MapRGB(screen->format, r << 3, g << 2, b << 3);
+
         }
     }
     if (SDL_MUSTLOCK(screen))
@@ -43,6 +50,75 @@ void loop()
     printf("run\n");
     gnuboy_run(0);
     gnuboy_run(1);
+
+    // Get keys SDL
+    SDL_Event event;
+    int pad = 0;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_UP:
+                pad |= GB_PAD_UP;
+                break;
+            case SDLK_DOWN:
+                pad |= GB_PAD_DOWN;
+                break;
+            case SDLK_LEFT: 
+                pad |= GB_PAD_LEFT;
+                break;
+            case SDLK_RIGHT:
+                pad |= GB_PAD_RIGHT;
+                break;
+            case SDLK_z:
+                pad |= GB_PAD_A;
+                break;
+            case SDLK_x:
+                pad |= GB_PAD_B;
+                break;
+            case SDLK_RETURN:
+                pad |= GB_PAD_START;
+                break;
+            case SDLK_RSHIFT:
+                pad |= GB_PAD_SELECT;
+                break;
+            }
+            break;
+        case SDL_KEYUP:
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_UP:
+                pad &= ~GB_PAD_UP;
+                break;
+            case SDLK_DOWN:
+                pad &= ~GB_PAD_DOWN;
+                break;
+            case SDLK_LEFT:
+                pad &= ~GB_PAD_LEFT;
+                break;
+            case SDLK_RIGHT:
+                pad &= ~GB_PAD_RIGHT;
+                break;
+            case SDLK_z:
+                pad &= ~GB_PAD_A;
+                break;
+            case SDLK_x:
+                pad &= ~GB_PAD_B;
+                break;
+            case SDLK_RETURN:
+                pad &= ~GB_PAD_START;
+                break;
+            case SDLK_RSHIFT:
+                pad &= ~GB_PAD_SELECT;
+                break;
+            }
+            break;
+        }
+    }
+    gnuboy_set_pad(pad);
 }
 
 int main()
