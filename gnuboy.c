@@ -58,6 +58,10 @@ int main()
     gnuboy_set_framebuffer((void *)framebuffer);
     printf("Framebuffer set\n");
 
+    EM_ASM({
+        loadROMToFS();
+    });
+
     gnuboy_load_rom_file("rom.gbc");
     printf("ROM Loaded\n");
 
