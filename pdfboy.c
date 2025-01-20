@@ -48,10 +48,10 @@ int main() {
 
     // ---- ROM
     printf("Loading ROM\n");
-    EM_ASM({
-        loadROMToFS();
-    });
-    printf("ROM Moved to FS\n");
+    // EM_ASM({
+    //     loadROMToFS();
+    // });
+    // printf("ROM Moved to FS\n");
 
     if (gnuboy_load_rom_file("rom.gbc") == -1)
         PANIC("ROM loading failed!");
@@ -66,7 +66,10 @@ int main() {
     printf("starting!\n");
 
     EM_ASM({
-        app.setInterval("_loop()", 0);
+        // app.setInterval("_loop()", 0);
+        setInterval(() => {
+            _loop();
+        }, 10);
     });
 
     return 0;

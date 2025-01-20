@@ -1,27 +1,27 @@
 // This gives the wrappers and methods to connect Emscripten to the PDF APIs
-var Module = {};
+// var Module = {};
 
-// ---- Console
-// Console output lines
-var lines = [];
+// // ---- Console
+// // Console output lines
+// var lines = [];
 
-// Base64 Encoded ROM Data
+// // Base64 Encoded ROM Data
 var b64rom = "__replace_with_rom__";
 
-function log(msg) {
-	// lines.push(msg);
-	// if (lines.length > 25)
-	// 	lines.shift();
+// function log(msg) {
+// 	// lines.push(msg);
+// 	// if (lines.length > 25)
+// 	// 	lines.shift();
 
-	// for (var i = 0; i < lines.length; i++) {
-	// 	var row = lines[i];
-	// 	globalThis.getField("console_" + (25 - i - 1)).value = row;
-	// }
-	app.alert(msg);
-}
+// 	// for (var i = 0; i < lines.length; i++) {
+// 	// 	var row = lines[i];
+// 	// 	globalThis.getField("console_" + (25 - i - 1)).value = row;
+// 	// }
+// 	app.alert(msg);
+// }
 
-Module.print = log
-Module.printErr = log
+// Module.print = log
+// Module.printErr = log
 
 // --- ROM
 // Builtin Base64 functions aren't available in PDFs
@@ -65,5 +65,6 @@ function loadROMToFS() {
 	FS.write(stream, uint8Buffer, 0, uint8Buffer.length, 0);
 	FS.close(stream);
 
-	Module.print("ROM decoded and placed in FS");
+	// Module.print("ROM decoded and placed in FS");
+	console.log("ROM decoded and placed in FS");
 }
