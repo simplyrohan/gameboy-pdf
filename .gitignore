@@ -2,3 +2,4 @@
 emsdk/*
 *.gbc
 build/*
+.vscode/

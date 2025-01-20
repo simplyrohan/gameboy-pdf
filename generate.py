@@ -87,20 +87,8 @@ def create_key_buttons(keys_info):
 
 
 if __name__ == "__main__":
-    with open("build/index.js", "r") as f:
+    with open("build/gnuboy.js", "r") as f:
         js = f.read()
-
-    with open("mario.gbc", "rb") as rom:
-        rom_bytes = rom.read()
-        rom_size = len(rom_bytes)
-        
-    js = js.replace("__replace_with_rom__", base64.b64encode(rom_bytes).decode("utf-8"))
-    js = js.replace("__replace_with_rom_size__", str(rom_size))
-
-    with open("build/index.js", "w") as f:
-            f.write(js)
-
-
 
     writer = PdfWriter()
     page = create_page(400, 600)
