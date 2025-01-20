@@ -92,13 +92,10 @@ void gnuboy_run(bool draw)
 	}
 
 	// We emulate until vblank (0..144)
-	printf("Starting\n");
-	while (R_LY < 144) {
-		printf("%d\n", R_LY);
+	while (R_LY <= 144) {
 		cycles += 228;
 		cycles -= gb_cpu_emulate(cycles);
 	}
-	printf("Finished\n");
 
 	/* When using GB_PIXEL_PALETTED, the host should draw the frame in this callback
 	   because the palette can be modified below before gnuboy_run returns. */
@@ -187,7 +184,7 @@ void gnuboy_load_bank(int bank)
 	if (!cart.romFile)
 		return;
 
-	// MESSAGE_INFO("loading bank %d.\n", bank);
+	MESSAGE_INFO("loading bank %d.\n", bank);
 	while (!cart.rombanks[bank])
 	{
 		int i = rand() & 0xFF;
