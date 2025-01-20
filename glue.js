@@ -1,3 +1,24 @@
+// ---- Console
+var Module = {};
+
+var lines = [];
+
+function log(msg) {
+	lines.push(msg);
+	if (lines.length > 25)
+		lines.shift();
+
+	for (var i = 0; i < lines.length; i++) {
+		var row = lines[i];
+		globalThis.getField("console_" + (25 - i - 1)).value = row;
+	}
+	// app.alert(msg);
+}
+
+Module.print = log
+Module.printErr = log
+
+// ---- ROM
 var b64rom = "__replace_with_rom__";
 
 function base64ToUint8Array(base64) {

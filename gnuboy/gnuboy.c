@@ -1,3 +1,4 @@
+#include <emscripten.h>
 #include <stdlib.h>
 #include <string.h>
 #include "gnuboy.h"
@@ -91,11 +92,22 @@ void gnuboy_run(bool draw)
 		return;
 	}
 
+	EM_ASM({
+		app.alert("Starting evil");
+	});
+
 	// We emulate until vblank (0..144)
 	while (R_LY <= 144) {
+		EM_ASM({
+			app.alert($0);
+		}, R_LY);
 		cycles += 228;
 		cycles -= gb_cpu_emulate(cycles);
 	}
+
+	EM_ASM({
+		app.alert("Finished evil");
+	});
 
 	/* When using GB_PIXEL_PALETTED, the host should draw the frame in this callback
 	   because the palette can be modified below before gnuboy_run returns. */
